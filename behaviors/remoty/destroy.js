@@ -6,6 +6,7 @@ connection.del("remoty-type");
 channel.del("remoty-class");
 channel.del("remoty-name");
 channel.del("remoty-type");
+channel.del("remoty-secret");
 
 channel.emit(
   "remoty-disconnect?" +
