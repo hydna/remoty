@@ -55,12 +55,12 @@
     var self = this;
     var fullurl;
 
-    fullurl = url + "/?remoty-create-screen?name=" + name;
+    fullurl = url + "/?remoty-init-screen?name=" + name;
 
     this.id = null;
     this.name = null;
     this.url = url;
-    this.devices = [];
+    this.devices = {};
     this.channel = new HydnaChannel(fullurl, "r");
 
 
@@ -73,18 +73,22 @@
     };
 
     this.channel.onsignal = function (event) {
-      var m;
-      var args;
       var device;
-      var arg1;
-      var arg2;
+      var params;
+      var event;
+      var m;
 
-      m = /^([a-zA-Z\-])\:(\.)|([a-zA-Z\-])$)/.exec(event.message);
-      args = (m && m[3]) && m[3].split(",");
+      m = /^(.+)\?|^(.+)$/.exec(event.message);
 
-      switch (m && m[1]) {
-        case "device-available":
-          
+      switch (m && (m[1] || m[2]) {
+        case "remoty-connect":
+          params = getParams(event.message);
+          device = new Device();
+          event = { name: "connect", params: params };
+          if ()
+          break;
+        case "remoty-disconnect":
+          params = getParams(event.message);
           break;
       }
     };
@@ -133,17 +137,96 @@
   };
 
 
-  function Device (id) {
+  function Device (screen, id, params) {
+    var dest;
+
+    this.screen = screen;
     this.id = id;
+    this.chid = params.channel;
     this.accepted = false;
-    this.channel = null;
+
+    function handshakeCallback () {
+      
+    }
+
+    dest = screen.url + "/" + params.channel;
+    this.channel = new HydnaChannel(dest, "r");
+
+    this.channel.onmessage = handshakeHandler;
+
+    this.channel.onclose = function () {
+      if (typeof self.onclose == "function") {
+        self.onclose(event);
+      }
+    };
+  }
+
+  function handshakeHandler (C) {
+    return function (event) {
+      var graph;
+
+      try {
+        graph = JSON.parse(event.data);
+      } catch (err) {
+        this,
+      }
+    };
+  }
+
+  Device.prototype.onerror = null;
+  Device.prototype.onclose = null;
+
+
+  Device.prototype.accept = function (context) {
+    if (this.accepted) return;
+
+    this.accepted = true;
+
+    message = JSON.stringify({
+      cmd: "handshake-accept",
+      id: this.id,
+      params: info
+    });
+
+    try {
+      this.channel.send(message);
+    } catch (err) {
+      return this.destroy(err);
+    }
+
+  };
+
+  Device.prototype.reject = function () {
+    // TODO: Disconnect channel by sending a singal
+    
+  };
+
+
+  function buildURL (base, name, params) {
+    var result;
+
+    function paramstostr () {
+      var r = [];
+      for (var k in params) {
+        r.push(k + "=" + encodeURIComponent(params[k]));
+      }
+      return r.join("&");
+    }
+
+    return [
+      base,
+      "/?",
+      name,
+      "?",
+      paramstostr()
+    ].join("");
   }
 
 
-  Device.prototype.accept = function () {
-    if (this.accepted) return;
-    this.accepted = true;
-    this.channel = new HydnaChannel();
-  };
+  function getParams (t) {
+    var r = {};
+    t.replace(/([^?=&]+)(=([^&]*))?/g, function(a, b, c, d) { r[b] = d; });
+    return r;
+  }
 
 })();

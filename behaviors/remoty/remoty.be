@@ -27,14 +27,14 @@ function CHANNEL_OPEN (no) {
       deny($MESSAGE)
     end
     deny("ERR_REMOTY_BAD_MODE")
-  end  
+  end
 }
 
 
 function CHANNEL_CLOSE (no) {
   channel = no
     run("./destroy.js", SCRIPT_ENV)
-  end  
+  end
 }
 
 /*
@@ -61,7 +61,7 @@ end
 
 
 emit
-  
+
 end
 
 
