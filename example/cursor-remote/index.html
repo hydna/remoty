@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    <title>Remoty Control Demo</title>
+    <script src="../src/remoty.js"></script>
+    <link rel="stylesheet" href="screen.css" type="text/css" media="screen">
+    <script type="text/javascript" charset="utf-8">
+
+      // Determind which script to load.
+      (function () {
+        var main;
+        var embed;
+
+        main = "screen.js";
+
+        embed = [
+          "%3Cscript src='",
+          main,
+          "' type='text/javascript'%3E%3C/script%3E"
+        ];
+
+        document.write(unescape(embed.join("")));
+      })();
+    </script>
+  </head>
+  <body>
+    <canvas></canvas>
+  </body>
+</html>
