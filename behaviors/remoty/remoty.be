@@ -4,11 +4,13 @@ if (typeof OFFSET == "undefined") OFFSET = 5000;
 if (typeof MAX_SCREENS == "undefined") MAX_SCREENS = 10;
 if (typeof MAX_REMOTES == "undefined") MAX_REMOTES = 20;
 
+
 SCRIPT_ENV = {
   OFFSET        : OFFSET,
   MAX_SCREENS   : MAX_SCREENS,
   MAX_REMOTES   : MAX_REMOTES
 }
+
 
 function EACH_CHANNEL (fn) {
   var range = OFFSET + MAX_SCREENS + MAX_REMOTES;
@@ -43,7 +45,7 @@ function CHANNEL_CLOSE (no) {
  */
 open
   channel = API_CHANNEL
-    token = match("^remoty-init-(screen|device)")
+    token = match("^remoty-init-(screen|device)", $TYPE)
       mode = "writeemit"
         run("./init.js", SCRIPT_ENV)
         when = $CODE

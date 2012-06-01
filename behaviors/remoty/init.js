@@ -30,6 +30,7 @@ params = (function (t) {
 })(TOKEN);
 
 switch (type) {
+
   case "screen":
     for (var i = SCREEN_OFFSET; i < SCREEN_OFFSET + MAX_SCREENS; i++) {
       chan = domain.getChannel(i);
@@ -49,12 +50,12 @@ switch (type) {
     }
     exit(0, "ERR_REMOTY_TOO_MANY_SCREENS");
     break;
+
   case "device":
     for (var i = DEVICE_OFFSET; i < DEVICE_OFFSET + MAX_DEVICES; i++) {
       chan = domain.getChannel(i);
       if (chan.get("remoty-class") == null) {
         chan.set("remoty-class", "device");
-        chan.set("remoty-name", params.name || "noname");
         chan.set("remoty-type", params.type || "na");
         connection.set("remoty-class", "screen");
         connection.set("remoty-channel", id);

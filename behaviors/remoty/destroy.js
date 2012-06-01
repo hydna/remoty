@@ -8,7 +8,4 @@ channel.del("remoty-name");
 channel.del("remoty-type");
 channel.del("remoty-secret");
 
-channel.emit(
-  "remoty-disconnect?" +
-  "connection=" + connection.id
-);
+channel.emit("remoty-disconnect?" + "connection=" + connection.id);
